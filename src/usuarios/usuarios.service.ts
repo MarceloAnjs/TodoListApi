@@ -3,6 +3,7 @@ import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { encodePassword, comparePassword } from 'src/utils/bcrypt';
 import { DatabaseConfig } from 'src/sqlConfig';
+import { LoginUsuarioDto } from './dto/login-usuario.dto';
 var mysql = require('mysql2');
 
 @Injectable()
@@ -44,11 +45,11 @@ export class UsuariosService {
     }
   } 
 
-  async login(email: string, senha: string) {
+  async login(loginUsuarioDto: LoginUsuarioDto) {
     let connection = await mysql.createConnection(this.databaseConfig.getConfig());
     let dadosUsuario = {
-      Email: email,
-      Senha: senha,
+      Email: loginUsuarioDto.Email,
+      Senha: loginUsuarioDto.Senha,
     };
 
 

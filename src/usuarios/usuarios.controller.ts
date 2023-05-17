@@ -11,6 +11,7 @@ import {
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { LoginUsuarioDto } from './dto/login-usuario.dto';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -22,8 +23,8 @@ export class UsuariosController {
   }
 
   @Post('login')
-  login(@Query('Email') email: string, @Query('Senha') senha: string) {
-    return this.usuariosService.login(email, senha);
+  login(@Body() loginUsuarioDto: LoginUsuarioDto) {
+    return this.usuariosService.login(loginUsuarioDto);
   }
 
   @Get()
