@@ -27,14 +27,14 @@ export class UsuariosController {
     return this.usuariosService.login(loginUsuarioDto);
   }
 
-  @Get()
-  findOne() {
-    return this.usuariosService.findOne();
+  @Get(':idUsuario')
+  findOne(@Param('idUsuario') idUsuario: number) {
+    return this.usuariosService.findOne(idUsuario);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return this.usuariosService.update(+id, updateUsuarioDto);
+  @Patch(':idUsuario')
+  update(@Param('idUsuario') idUsuario: number, @Body() updateUsuarioDto: UpdateUsuarioDto) {
+    return this.usuariosService.update(idUsuario, updateUsuarioDto);
   }
 
   @Delete(':id')
