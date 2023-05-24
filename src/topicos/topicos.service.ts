@@ -106,6 +106,7 @@ export class TopicosService {
       }
       const dadosTopico = {
         Nome: rows[0].Nome,
+        idUsuario: rows[0].idUsuario,
       };
 
       return {

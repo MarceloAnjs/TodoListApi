@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Topico } from "../entities/topico.entity";
-import { IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateTopicoDto implements Topico {
     @ApiProperty()
