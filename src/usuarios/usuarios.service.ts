@@ -18,12 +18,7 @@ export class UsuariosService {
       Email: createUsuarioDto.Email,
       Senha: await encodePassword(createUsuarioDto.Senha),
     };
-    if (!dadosUsuario.Nome || !dadosUsuario.Email || !dadosUsuario.Senha) {
-      return {
-        statusCode: 400,
-        message: 'Campos obrigatórios faltando para o cadastro!',
-      };
-    }
+   
     try {
       const query = 'INSERT INTO Usuarios (Nome, Email, Senha) VALUES (?, ?, ?)';
       await new Promise((resolve, reject) => {
