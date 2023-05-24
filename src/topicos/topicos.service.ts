@@ -1,29 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateTopicoDto } from './dto/create-topico.dto';
 import { UpdateTopicoDto } from './dto/update-topico.dto';
 import { DatabaseConfig } from 'src/sqlConfig';
+import { UsuariosService } from 'src/usuarios/usuarios.service';
 var mysql = require('mysql2');
 
 @Injectable()
 export class TopicosService {
-  constructor(private readonly databaseConfig: DatabaseConfig) {}
+  constructor(
+    @Inject(UsuariosService) private readonly usuarioService: UsuariosService,
+    @Inject(DatabaseConfig) private readonly databaseConfig: DatabaseConfig,
+    
+  ) {}
 
   async create(createTopicoDto: CreateTopicoDto) {
     const connection = mysql.createConnection(this.databaseConfig.getConfig());
 
-    
-    if (!createTopicoDto.Nome || !createTopicoDto.idUsuario) {
-      return {
-        statusCode: 400,
-        message: 'Campos obrigatórios faltando para o cadastro!',
-      };
-    }
-
     try {
-      const queryUsuario = 'SELECT * FROM Usuarios WHERE idUsuario = ? AND Ativo = 1';
-
-      let [rows, fields] = await connection.promise().query(queryUsuario, [createTopicoDto.idUsuario]);
-      if (rows.length === 0) {
+      const Usuario = await this.usuarioService.findOne(createTopicoDto.idUsuario);
+      if (Usuario.statusCode !== 200) {
         return {
           statusCode: 404,
           message: 'Usuário não encontrado, impossível finalizar o cadastro do tópico.',
