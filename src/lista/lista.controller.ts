@@ -17,6 +17,11 @@ export class ListaController {
     return this.listaService.findAll(idTopico);
   }
 
+  @Get('tarefas/:idLista')
+  findAllTarefas(@Param('idLista') idLista: number) {
+    return this.listaService.findAllTarefas(idLista);
+  }
+
   @Get(':idLista')
   findOne(@Param('idLista') idLista: number) {
     return this.listaService.findOne(idLista);

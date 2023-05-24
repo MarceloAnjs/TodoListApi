@@ -137,6 +137,52 @@ export class ListaService {
     }
   }
 
+  async findAllTarefas(idLista: number) {
+    let connection = await mysql.createConnection(
+      this.databaseConfig.getConfig(),
+    );
+    try {
+      
+
+      const query = ` SELECT
+                        idTarefa,
+                        Nome,
+                        Completa
+                      FROM
+                        Tarefas
+                      WHERE
+                        idLista = ?
+      `;
+
+      let [rows] = await connection.promise().query(query, [idLista]);
+   
+      if (rows.length === 0) {
+        return {
+          statusCode: 404,
+          message: 'Nenhuma tarera encontrada!',
+          data: []
+        };
+      }
+      const dadosTarefa = rows.map((row) => {
+        return {
+          idTarefa: row.idTarefa,
+          Nome: row.Nome,
+          Completa: row.Completa === 1 ? true : false,
+        }
+      });
+
+      return {
+        statusCode: 200,
+        message: 'Tarefas encontradas com sucesso!',
+        data: dadosTarefa,
+      };
+    } catch (error) {
+      throw error;
+    } finally {
+      connection.end();
+    }
+  }
+
   async findOne(idLista: number) {
     let connection = await mysql.createConnection(
       this.databaseConfig.getConfig(),
@@ -144,6 +190,7 @@ export class ListaService {
     try {
       const query = `SELECT
                       T.idTopico,
+                      T.idUsuario,
                       L.idLista,
                       L.Nome
                     FROM
@@ -165,6 +212,7 @@ export class ListaService {
       const dadosTopico = rows.map((row) => {
         return {
           idTopico: row.idTopico,
+          idUsuario: row.idUsuario,
           idLista: row.idLista,
           Nome: row.Nome,
         }
